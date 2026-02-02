@@ -16,6 +16,9 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
     Dialog,
@@ -231,14 +234,7 @@ export default function MoreButtonMenu({
         }
     };
 
-    // Share handler (placeholder - would need sharing implementation)
-    const handleShare = () => {
-        toast({
-            title: "Share",
-            description: "Sharing functionality coming soon!"
-        });
-        if (onClose) onClose();
-    };
+
 
     return (
         <>
@@ -436,41 +432,30 @@ export default function MoreButtonMenu({
                                 </DropdownMenuItem>
 
                                 {/* Share */}
-                                <DropdownMenuItem
-                                    className="flex items-center justify-between focus:bg-slate-50 focus:text-slate-700 cursor-pointer text-slate-600 outline-none"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleShare();
-                                    }}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-500">
-                                            <Share2 className="h-3.5 w-3.5" />
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger
+                                        className="flex items-center justify-between focus:bg-slate-50 focus:text-slate-700 cursor-pointer text-slate-600 outline-none"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-500">
+                                                <Share2 className="h-3.5 w-3.5" />
+                                            </div>
+                                            <span className="truncate">Share</span>
                                         </div>
-                                        <span className="truncate">Share</span>
-                                    </div>
-                                    <ChevronRight className="h-4 w-4 text-slate-400" />
-                                </DropdownMenuItem>
-
-                                {/* Organise */}
-                                <DropdownMenuItem
-                                    className="flex items-center justify-between focus:bg-slate-50 focus:text-slate-700 cursor-pointer text-slate-600 outline-none"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        toast({
-                                            title: "Organise",
-                                            description: "Move/copy functionality coming soon!"
-                                        });
-                                    }}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-100 text-slate-500">
-                                            <FolderTree className="h-3.5 w-3.5" />
-                                        </div>
-                                        <span className="truncate">Organise</span>
-                                    </div>
-                                    <ChevronRight className="h-4 w-4 text-slate-400" />
-                                </DropdownMenuItem>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuSubContent className="w-48 p-1">
+                                        <DropdownMenuItem onClick={() => {
+                                            navigator.clipboard.writeText(window.location.href);
+                                            toast({
+                                                title: "Link copied",
+                                                description: "The link has been copied to your clipboard."
+                                            });
+                                            if (onClose) onClose();
+                                        }}>
+                                            <span className="truncate">Copy link</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuSub>
 
                                 {/* File/Folder information */}
                                 <DropdownMenuItem
@@ -486,7 +471,6 @@ export default function MoreButtonMenu({
                                         </div>
                                         <span className="truncate">{isFolder ? 'Folder' : 'File'} information</span>
                                     </div>
-                                    <ChevronRight className="h-4 w-4 text-slate-400" />
                                 </DropdownMenuItem>
 
                                 <DropdownMenuSeparator className="bg-slate-100" />

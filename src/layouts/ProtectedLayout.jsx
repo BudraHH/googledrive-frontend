@@ -40,7 +40,13 @@ import {
 import useAuthStore from '@/stores/useAuthStore';
 import { ROUTES } from '@/routes/routes';
 import { DATA_TYPES } from '@/constants/appConstants';
-import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
 import MoreButtonMenu from '@/components/shared/MoreButtonMenu';
 import NewButtonMenu from '@/components/shared/NewButtonMenu';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
@@ -315,11 +321,18 @@ export default function ProtectedLayout() {
         return segments;
     };
 
-    const userInitials = user?.name
-        ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
-        : 'U';
+    // Extract user data reliably (handle possible { data: { ... } } structure)
+    const currentUser = user?.data || user;
 
-    const userName = user?.name || 'User';
+    const userName = currentUser?.firstName
+        ? `${currentUser.firstName} ${currentUser.lastName || ''}`.trim()
+        : currentUser?.name || 'User';
+
+    const userInitials = currentUser?.firstName
+        ? `${currentUser.firstName[0]}${currentUser?.lastName ? currentUser.lastName[0] : ''}`.toUpperCase()
+        : currentUser?.name
+            ? currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+            : 'U';
 
     const renderNavItem = (item, collapsed = false, onClickCallback = null) => {
         const isNotif = item.label === 'Notifications';
@@ -458,17 +471,7 @@ export default function ProtectedLayout() {
                         </div>
                     </nav>
 
-                    <div className="border-t border-slate-200 px-6 py-6 space-y-4 bg-slate-50/50">
-                        <div className="space-y-2">
-                            <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                                <div className="h-full bg-brand-500 rounded-full" style={{ width: '0.4%' }}></div>
-                            </div>
-                            <p className="text-xs text-slate-600">8.15 GB of 2 TB used</p>
-                        </div>
-                        <Button variant="outline" className="w-full rounded-full border-slate-300 text-brand-600 font-semibold hover:bg-brand-50">
-                            Get more storage
-                        </Button>
-                    </div>
+
                 </div>
             </aside>
 
@@ -532,19 +535,6 @@ export default function ProtectedLayout() {
                     </nav>
 
                     <div className="border-t border-slate-200 bg-slate-50/50">
-                        {!isSidebarCollapsed && (
-                            <div className="px-6 py-6 space-y-4">
-                                <div className="space-y-2">
-                                    <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
-                                        <div className="h-full bg-brand-500 rounded-full" style={{ width: '0.4%' }}></div>
-                                    </div>
-                                    <p className="text-xs text-slate-600 font-medium">8.15 GB of 2 TB used</p>
-                                </div>
-                                <Button variant="outline" className="w-full rounded-full border-slate-300 text-brand-600 font-semibold hover:bg-brand-50 text-xs">
-                                    Get more storage
-                                </Button>
-                            </div>
-                        )}
                         <div className={`p-3 ${isSidebarCollapsed ? 'flex justify-center' : ''}`}>
                             <button
                                 onClick={toggleSidebar}
@@ -603,15 +593,37 @@ export default function ProtectedLayout() {
                             ))}
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => ROUTES.PROTECTED.USER.SETTINGS?.BASE && navigate(ROUTES.PROTECTED.USER.SETTINGS.BASE)}
-                            className="flex items-center gap-2 hover:bg-slate-50 rounded-lg px-2 py-1.5 transition-colors"
-                        >
-                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-medium text-sm">
-                                {userInitials}
-                            </div>
-                        </button>
+                    <div className="flex items-center gap-2 px-2">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button className="flex items-center gap-2 hover:bg-slate-50 rounded-full transition-colors outline-none">
+                                    <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-medium text-sm">
+                                        {userInitials}
+                                    </div>
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-56 p-1 rounded-xl shadow-xl border-slate-200">
+                                <div className="px-3 py-2 border-b border-slate-100 mb-1">
+                                    <p className="text-sm font-semibold text-slate-900 truncate">{userName}</p>
+                                    <p className="text-xs text-slate-500 truncate">{currentUser?.email}</p>
+                                </div>
+                                <DropdownMenuItem
+                                    className="flex items-center gap-3 px-3 py-2 cursor-pointer rounded-lg text-slate-600 focus:bg-slate-50 focus:text-slate-900"
+                                    onClick={() => ROUTES.PROTECTED.USER.SETTINGS?.BASE && navigate(ROUTES.PROTECTED.USER.SETTINGS.BASE)}
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    <span className="text-sm font-medium">Settings</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator className="bg-slate-100" />
+                                <DropdownMenuItem
+                                    className="flex items-center gap-3 px-3 py-2 cursor-pointer rounded-lg text-red-600 focus:bg-red-50 focus:text-red-700"
+                                    onClick={handleLogout}
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    <span className="text-sm font-medium">Sign out</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </header>
 
@@ -650,17 +662,44 @@ export default function ProtectedLayout() {
                         ))}
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                         <AgentStatusIndicator variant="compact" />
-                        <button
-                            onClick={() => ROUTES.PROTECTED.USER.SETTINGS?.BASE && navigate(ROUTES.PROTECTED.USER.SETTINGS.BASE)}
-                            className="flex items-center gap-2 hover:bg-slate-50 rounded-lg px-2 py-1.5 transition-colors"
-                        >
-                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-medium text-sm">
-                                {userInitials}
-                            </div>
-                            <span className="text-sm font-medium text-slate-700">{userName}</span>
-                        </button>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button className="flex items-center gap-2 hover:bg-slate-50 rounded-lg px-2 py-1.5 transition-colors outline-none">
+                                    <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-medium text-sm">
+                                        {userInitials}
+                                    </div>
+                                    <span className="text-sm font-medium text-slate-700">{userName}</span>
+                                    <ChevronDown className="h-4 w-4 text-slate-400 ml-1" />
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-64 p-1 rounded-xl shadow-xl border-slate-200">
+                                <div className="px-3 py-3 border-b border-slate-100 mb-1">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-base">
+                                            {userInitials}
+                                        </div>
+                                        <div className="overflow-hidden">
+                                            <p className="text-sm font-bold text-slate-900 truncate">{userName}</p>
+                                            <p className="text-xs text-slate-500 truncate">{currentUser?.email}</p>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+
+                                <DropdownMenuSeparator className="bg-slate-100 mx-1" />
+
+                                <DropdownMenuItem
+                                    className="flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-lg text-red-600 focus:bg-red-50 focus:text-red-700"
+                                    onClick={handleLogout}
+                                >
+                                    <LogOut className="h-4 w-4" />
+                                    <span className="text-sm font-medium">Sign out</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 </header>
 

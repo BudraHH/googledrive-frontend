@@ -260,7 +260,7 @@ const Hero = () => {
                                     z-index: 10;
                                     width: calc(45% + (var(--scroll) * 25%));
                                     transform: translate(
-                                        calc(-5% + (var(--scroll) * -0px)), 
+                                        calc(-5% + (var(--scroll) * -150px)), 
                                         calc(var(--scroll) * 850px)
                                     );
                                     position: absolute;
@@ -272,50 +272,7 @@ const Hero = () => {
 
                             <div className={`relative w-full  flex items-center justify-center transition-all duration-300 ${isDesktop && showTaglines ? 'gap-8' : ''}`}>
 
-                                {/* Left Tagline */}
-                                <div className="absolute -left-[280px] xl:-left-[340px] 2xl:-left-[400px] top-1/2 -translate-y-1/2 z-50 hidden xl:block">
-                                    <motion.div
-                                        initial="hidden"
-                                        animate={isDesktop && showTaglines ? "visible" : "hidden"}
-                                        variants={TAGLINE_CONTAINER_VARIANTS}
-                                    >
-                                        <div className="text-left w-[300px] xl:w-[300px] 2xl:w-[420px]">
-                                            <div className="text-[2.5rem] xl:text-[2.5rem] 2xl:text-[3.5rem] font-black text-slate-900 leading-[0.85] tracking-tighter mb-6 xl:mb-8 uppercase flex flex-col">
-                                                <motion.span variants={TEXT_REVEAL_VARIANTS}>
-                                                    <span className="text-brand-500">Privacy</span> Is More
-                                                </motion.span>
-                                                <motion.span variants={TEXT_REVEAL_VARIANTS}>
-                                                    Important Than
-                                                </motion.span>
-                                                <motion.span variants={TEXT_REVEAL_VARIANTS} className="text-slate-900">
-                                                    Storage Only
-                                                </motion.span>
-                                            </div>
-
-                                            <motion.div
-                                                variants={TEXT_REVEAL_VARIANTS}
-                                                className="flex border-l-[3px] border-brand-500 pl-6 ml-1"
-                                            >
-                                                <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-[280px]">
-                                                    Together with AWS S3 we achieve more security than any single server could ever do alone.
-                                                </p>
-                                            </motion.div>
-
-                                            <motion.div
-                                                variants={TEXT_REVEAL_VARIANTS}
-                                                className="mt-8 ml-1"
-                                            >
-                                                <Button
-                                                    as={Link}
-                                                    to={ROUTES.SIGNUP}
-                                                >
-                                                    Start Storing
-                                                    <ArrowRight className="h-4 w-4" />
-                                                </Button>
-                                            </motion.div>
-                                        </div>
-                                    </motion.div>
-                                </div>
+                               
 
                                 {/* Mockup Container */}
                                 <motion.div
