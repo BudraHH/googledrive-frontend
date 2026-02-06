@@ -1,0 +1,10 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0066B2"/>
+      <stop offset="100%" stop-color="#003366"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="url(#blueGrad)"/>
+  <path d="M21.5 13C23.9853 13 26 15.0147 26 17.5C26 19.9853 23.9853 22 21.5 22H11.5C9.01472 22 7 19.9853 7 17.5C7 15.3518 8.50853 13.5554 10.5113 13.0903C11.1378 10.1852 13.6931 8 16.75 8C19.3402 8 21.5645 9.57863 22.5023 11.832C22.176 11.7208 21.8285 11.6601 21.4674 11.6601L21.5 13Z" fill="white"/>
+</svg>
