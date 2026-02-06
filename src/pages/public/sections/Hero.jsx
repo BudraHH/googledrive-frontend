@@ -190,13 +190,15 @@ const Hero = () => {
                                     </span>
                                 </Button>
                                 <Button
-                                    as={Link}
-                                    to={ROUTES.WATCH_DEMO}
+                                    as="a"
+                                    href="https://youtu.be/6taEfWGWq8A"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     variant="outline"
                                     size="lg"
                                     className="bg-slate-50 hover:bg-white"  >
                                     <Play className="h-5 w-5 mr-2 transition-transform group-hover:scale-110" />
-                                    Watch How it Works
+                                    Watch Demo
                                 </Button>
                             </motion.div>
 
@@ -272,7 +274,7 @@ const Hero = () => {
 
                             <div className={`relative w-full  flex items-center justify-center transition-all duration-300 ${isDesktop && showTaglines ? 'gap-8' : ''}`}>
 
-                               
+
 
                                 {/* Mockup Container */}
                                 <motion.div
