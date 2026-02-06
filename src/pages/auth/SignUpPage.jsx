@@ -259,7 +259,7 @@ export default function SignUpPage() {
                                     id="email"
                                     name="email"
                                     type="email"
-                                    placeholder="name@company.com"
+                                    placeholder="name@example.com"
                                     value={formData.email}
                                     onChange={handleInputChange}
                                     className={formErrors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
@@ -273,7 +273,7 @@ export default function SignUpPage() {
                                 transition={{ delay: 0.7 }}
                                 className="space-y-2"
                             >
-                                <Label htmlFor="password" classname="text-slate-700 font-semibold">Password</Label>
+                                <Label htmlFor="password" className="text-slate-700 font-semibold">Password</Label>
                                 <div className="relative">
                                     <Input
                                         id="password"

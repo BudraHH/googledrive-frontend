@@ -13,7 +13,6 @@ API.interceptors.response.use(
             // Automatically clear local state if token expires
             // Note: We can't import useAuthStore here directly due to circular dependencies
             // but the next page refresh will trigger a logout because checkAuth will fail
-            console.error('Session expired');
         }
         return Promise.reject(error);
     }
