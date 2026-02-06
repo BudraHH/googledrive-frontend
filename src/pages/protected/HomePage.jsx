@@ -424,7 +424,7 @@ export default function HomePage() {
                             className="flex items-center gap-2 group outline-none"
                         >
                             <div
-                                className={`text-slate-500 ${suggestedFoldersOpen ? 'rotate-0' : '-rotate-90'}`}
+                                className={`text-slate-500 ${suggestedFilesOpen ? 'rotate-0' : '-rotate-90'}`}
                             >
                                 <ChevronDown size={16} />
                             </div>
@@ -489,7 +489,14 @@ export default function HomePage() {
                                             columns={['name', 'details', 'owner', 'location']}
                                             getIcon={getTypeIcon}
                                             selectedItemIds={[]}
-                                            onItemClick={() => { }}
+                                            onItemClick={(item) => {
+                                                const folderTypes = [DATA_TYPES.FOLDER, DATA_TYPES.SHARED_FOLDER, DATA_TYPES.IMPORTED_FOLDER, DATA_TYPES.SYNCED_FOLDER, 'folder'];
+                                                if (folderTypes.includes(item.type)) {
+                                                    navigate(ROUTES.PROTECTED.USER.FOLDER.replace(':folderId', item.id));
+                                                } else {
+                                                    usePreviewStore.getState().setPreviewFile(item);
+                                                }
+                                            }}
                                             onItemDoubleClick={(item) => {
                                                 if (item.type === 'folder' || item.type === DATA_TYPES.FOLDER) {
                                                     navigate(ROUTES.PROTECTED.USER.FOLDER.replace(':folderId', item.id));
